@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}", // Adjust based on your project structure
+    "./src/**/*.{js,ts,jsx,tsx,mdx,svetle}", // Adjust based on your project structure
   ],
   theme: {
     extend: {
@@ -17,7 +17,8 @@ module.exports = {
         text: {
           primary: '#F8FAFC',   // High contrast white (Headers, Body)
           secondary: '#94A3B8', // Muted slate (Timestamps, Labels)
-          tertiary: '#475569',  // Darker slate (Placeholders, Disabled)
+          tertiary: '#475569',
+            // Darker slate (Placeholders, Disabled)
         },
 
         // --- 3. Borders ---
@@ -38,6 +39,11 @@ module.exports = {
           blue: '#3B82F6',    // "Tech Blue" - Primary Buttons, Links
           purple: '#8B5CF6',  // "Cyber Purple" - Technical Actions
         },
+        button: {
+          primary: "#10B981",
+          secondary: "#F59E0B",
+          tertiary: "#EF4444",
+        }
       },
       
       // --- 6. Custom Shadows (The "Glow" Effects) ---
