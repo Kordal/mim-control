@@ -6,11 +6,26 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 
 export const auth = betterAuth({
+	user: {
+		additionalFields: {
+			role: {
+				type: ['MIM', 'Ops', 'Business'],
+				required: false,
+				defaultValue: 'Ops',
+				input: false // don't allow user to set role
+			}
+		}
+	},
 	database: drizzleAdapter(db, {
 		provider: 'pg' // or "mysql", "sqlite"
 	}),
 	emailAndPassword: {
 		enabled: true
 	},
-	plugins: [admin(), sveltekitCookies(getRequestEvent)]
+	plugins: [
+		admin({
+			defaultRole: 'Ops'
+		}),
+		sveltekitCookies(getRequestEvent)
+	]
 });
