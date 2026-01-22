@@ -11,31 +11,31 @@
 		<h1 class="mb-6 text-2xl font-bold">{action === 'Login' ? 'Welcome Back' : 'Welcome'}</h1>
 		<form {...func} class="flex flex-col gap-4">
 			{#if action === 'Signup'}
-				<label for="name"> Name: </label>
+				<label class="text-text-secondary" for="name"> Name: </label>
 				<input
 					id="name"
 					{...signup.fields.name.as('text')}
-					class="border-DEFAULT border-subtle rounded-lg border"
+					class="border-DEFAULT border-subtle rounded-lg border text-text-primary"
 				/>
 				{#each signup.fields.name.issues() as issue}
 					<p class="text-status-critical">{issue.message}</p>
 				{/each}
 			{/if}
-			<label for="email"> Email: </label>
+			<label class="text-text-secondary" for="email"> Email: </label>
 
 			<input
 				id="email"
 				{...func.fields.email.as('text')}
-				class="border-DEFAULT border-subtle rounded-lg border"
+				class="border-DEFAULT border-subtle rounded-lg border text-text-primary"
 			/>
 			{#each func.fields.email.issues() as issue}
 				<p class="text-status-critical">{issue.message}</p>
 			{/each}
-			<label for="password"> Password: </label>
+			<label class="text-text-secondary" for="password"> Password: </label>
 			<input
 				id="password"
 				{...func.fields.password.as('text')}
-				class="border-DEFAULT border-subtle rounded-lg border"
+				class="border-DEFAULT border-subtle rounded-lg border text-text-primary"
 			/>
 			{#each func.fields.password.issues() as issue}
 				<p class="text-status-critical">{issue.message}</p>
@@ -45,7 +45,7 @@
 			</div>
 		</form>
 		<button
-			class="mt-4 ml-auto block text-text-secondary"
+			class="mt-4 ml-auto block text-text-primary"
 			onclick={() => (action = action === 'Login' ? 'Signup' : 'Login')}
 		>
 			{action === 'Login' ? 'I dont have an account' : 'login'}

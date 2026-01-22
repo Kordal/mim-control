@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp, boolean, index } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, boolean, index, pgEnum, uuid } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -93,6 +93,36 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export const accountRelations = relations(account, ({ one }) => ({
 	user: one(user, {
 		fields: [account.userId],
+		references: [user.id]
+	})
+}));
+
+//INCIDENT TABLE
+export const severityEnum = pgEnum('severity', ['P1', 'P2', 'P3']);
+export const statusEnum = pgEnum('status', ['ONGOING', 'MITIGATED', 'SOLVED']);
+
+// 2. The Incidents Table
+export const incidents = pgTable('incidents', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	publicId: text('public_id').notNull().unique(), // e.g. "INC-1001"
+	title: text('title').notNull(),
+	description: text('description'), // "User Impact"
+
+	status: statusEnum('status').default('ONGOING').notNull(),
+	severity: severityEnum('severity').default('P1').notNull(),
+
+	commanderId: text('commander_id').references(() => user.id),
+	impactedServices: text('impacted_services').array(), // Postgres Array
+
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+	resolvedAt: timestamp('resolved_at')
+});
+
+// 3. Define Relations (For easy querying later)
+export const incidentRelations = relations(incidents, ({ one }) => ({
+	commander: one(user, {
+		fields: [incidents.commanderId],
 		references: [user.id]
 	})
 }));
