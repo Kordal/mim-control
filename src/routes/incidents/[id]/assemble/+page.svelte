@@ -1,0 +1,90 @@
+<script lang="ts">
+	import { page } from '$app/state';
+	import { getIncidentDetail } from '$lib/api/incident.remote';
+	import StrategicHeader from '$lib/components/strategic-header.svelte';
+	import TeamCard from '$lib/components/TeamCard.svelte';
+	import type { Team } from '$lib/utils/types';
+
+	const incident = await getIncidentDetail(page.params.id!);
+
+	let testTeam = $state<Team>({
+		id: '1',
+		name: 'Test Team',
+		tags: ['Mobile', 'Nginx', 'AWS', 'Azure', 'GCP'],
+		members: ['test', 'team'],
+		onCall: 'Johan',
+		isAdded: false
+	});
+	let testTeam2 = $state<Team>({
+		id: '2',
+		name: 'Test Team 2',
+		tags: ['Mobile', 'Nginx', 'AWS', 'Azure', 'GCP'],
+		members: ['test', 'team'],
+		onCall: 'Bart',
+		isAdded: false
+	});
+
+	let selectedTeams = $state<Team[]>([]);
+
+	function removeTeamFromRoster(team: Team) {
+		selectedTeams = selectedTeams.filter((t) => t.id !== team.id);
+
+		// TODO: Have to improve with !
+		for (let t of [testTeam, testTeam2]) {
+			if (t.id === team.id) {
+				t.isAdded = false;
+			}
+		}
+	}
+	function addTeamToRoster(team: Team) {
+		if (selectedTeams.find((t) => t.id === team.id)) {
+			return;
+		}
+
+		// Find and update the original team
+		for (let t of [testTeam, testTeam2]) {
+			if (t.id === team.id) {
+				t.isAdded = true;
+			}
+		}
+
+		selectedTeams.push(team);
+	}
+</script>
+
+<div>
+	<StrategicHeader {incident}></StrategicHeader>
+	<div class="grid grid-cols-2 gap-2">
+		<div class="flex flex-col border border-border p-2">
+			<section class="flex flex-col gap-2">
+				<h2>Proposed Teams:</h2>
+				{#each [testTeam, testTeam2] as team}
+					{#if !team.isAdded}
+						<TeamCard {team} onAdd={addTeamToRoster} onRemove={removeTeamFromRoster}></TeamCard>
+					{/if}
+				{/each}
+			</section>
+		</div>
+
+		<div class="flex flex-col border border-border p-2">
+			<section>
+				<h2>Manual Selection:</h2>
+			</section>
+		</div>
+		<div class="col-span-2 border border-border p-2">
+			<section>
+				<h2>Selected Teams:</h2>
+				<div class="flex flex-row justify-evenly gap-2">
+					{#each selectedTeams as team}
+						<TeamCard {team} onRemove={removeTeamFromRoster}></TeamCard>
+					{/each}
+				</div>
+			</section>
+		</div>
+	</div>
+	<div class="flex justify-end">
+		<button class="mt-4 mr-2 rounded-md bg-button-primary p-2 text-text-primary"
+			>Start The War-Room</button
+		>
+	</div>
+</div>

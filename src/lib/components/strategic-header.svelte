@@ -25,9 +25,16 @@
 			<span class="text-text-secondary">Started: {formattedDate}</span>
 		</p>
 		<h1 class="text-text-primary">{incident.publicId}: {incident.title}</h1>
-		<p class="text-text-secondary">
-			Impact: {incident.impactedServices?.join(', ') || 'Global'}
-		</p>
+		<p class="text-text-secondary">Impact:</p>
+		<ul class="flex gap-2">
+			{#each incident.impactedServices as service}
+				<div
+					class="dark:bg-surface-dark flex h-8 shrink-0 items-center gap-x-2 rounded-lg border border-slate-300 bg-slate-200 px-3 transition-colors dark:border-slate-700"
+				>
+					<span class="text-sm font-medium text-text-tertiary">{service}</span>
+				</div>
+			{/each}
+		</ul>
 	</div>
 	<div class="gap-6 py-2 md:border-l md:border-border md:pl-6">
 		<p class="text-xs text-text-secondary">Duration</p>
