@@ -23,12 +23,7 @@ export const createIncident = form(
 	async ({ publicId, title, severity, description, status, impactedServices }) => {
 		const { locals } = getRequestEvent();
 
-		// Convert impactedServices to array if it's a single string
-		const servicesArray = Array.isArray(impactedServices)
-			? impactedServices
-			: impactedServices
-				? [impactedServices]
-				: [];
+		const servicesArray = impactedServices ? impactedServices.split(',').filter(Boolean) : [];
 
 		const incident = await db
 			.insert(incidents)

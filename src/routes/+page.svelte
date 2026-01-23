@@ -2,6 +2,7 @@
 	import { getUser } from '$lib/api/auth.remote';
 
 	import { authClient } from '$lib/auth-client';
+	import Searchdropdown from '$lib/components/Searchdropdown.svelte';
 
 	const user = await getUser();
 
@@ -24,3 +25,5 @@
 		<a href="/auth">Login</a>
 	{/if}
 </div>
+
+<Searchdropdown></Searchdropdown>

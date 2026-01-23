@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { createIncident } from '$lib/api/incident.remote';
+	import Searchdropdown from '$lib/components/Searchdropdown.svelte';
+
+	let impactedServices = $state<string[]>([]);
+	$inspect(impactedServices);
 </script>
 
 <section class="flex h-screen items-center justify-center">
@@ -85,15 +89,8 @@
 			<hr class="my-10 border border-border" />
 
 			<div class="mb-4 flex flex-col gap-2">
-				<label class="text-text-secondary" for="impactedServices">Impacted Services</label>
-				<input
-					class="border-subtle w-full rounded-md border p-2 text-text-secondary"
-					{...createIncident.fields.impactedServices.as('text')}
-					type="text"
-					id="impactedServices"
-					name="impactedServices"
-					placeholder="e.g. Auth, API (comma separated)"
-				/>
+				<Searchdropdown bind:selected={impactedServices}></Searchdropdown>
+				<input type="hidden" name="impactedServices" value={impactedServices.join(',')} />
 			</div>
 			<div class="flex justify-end">
 				<button class="rounded-md bg-button-primary p-2">Create Incident</button>

@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 import { form, getRequestEvent, query } from '$app/server';
 import * as v from 'valibot';
 import { auth } from '$lib/auth';
@@ -25,7 +25,8 @@ export const login = form(loginSchema, async (user) => {
 		await auth.api.signInEmail({ body: user, headers: request.headers });
 		redirect(303, '/');
 	} catch (error) {
-		console.error(error);
+		//TOOD: Remove console.log
+		console.log(error);
 	}
 });
 
@@ -38,7 +39,7 @@ export const signout = form(async () => {
 export const getUser = query(async () => {
 	const { locals } = getRequestEvent();
 	if (!locals.user) {
-		redirect(307, '/auth/login');
+		redirect(307, '/auth/');
 	}
 	return locals.user;
 });
