@@ -55,3 +55,8 @@ export const getIncidentDetail = query('unchecked', async (id: string) => {
 	const result = await db.select().from(incidents).where(eq(incidents.id, id)).limit(1);
 	return result[0] ?? null;
 });
+
+export const getAllIncidets = query('unchecked', async () => {
+	const result = await db.select().from(incidents);
+	return result;
+});
