@@ -52,10 +52,10 @@
 	}
 </script>
 
-<div>
+<div class="rounded-xl p-2">
 	<StrategicHeader {incident}></StrategicHeader>
-	<div class="grid grid-cols-2 gap-2">
-		<div class="flex flex-col border border-border p-2">
+	<div class="grid gap-2 rounded-xl md:grid-cols-2">
+		<div class="bg-surface-secondary flex flex-col rounded-xl border border-border p-4 shadow-sm">
 			<section class="flex flex-col gap-2">
 				<h2>Proposed Teams:</h2>
 				{#each [testTeam, testTeam2] as team}
@@ -66,15 +66,15 @@
 			</section>
 		</div>
 
-		<div class="flex flex-col border border-border p-2">
+		<div class="bg-surface-secondary flex flex-col rounded-xl border border-border p-4 shadow-sm">
 			<section>
 				<h2>Manual Selection:</h2>
 			</section>
 		</div>
-		<div class="col-span-2 border border-border p-2">
+		<div class="grid grid-cols-1 gap-2 bg-background-panel md:grid-cols-2">
 			<section>
 				<h2>Selected Teams:</h2>
-				<div class="flex flex-row justify-evenly gap-2">
+				<div class="justify-evenly gap-2 md:flex md:flex-row">
 					{#each selectedTeams as team}
 						<TeamCard {team} onRemove={removeTeamFromRoster}></TeamCard>
 					{/each}
@@ -83,8 +83,10 @@
 		</div>
 	</div>
 	<div class="flex justify-end">
-		<button class="mt-4 mr-2 rounded-md bg-button-primary p-2 text-text-primary"
-			>Start The War-Room</button
+		<button
+			class="mt-6 rounded-lg bg-button-primary px-6 py-3 font-medium text-text-primary shadow-md transition-opacity hover:opacity-90"
 		>
+			Start The War-Room
+		</button>
 	</div>
 </div>
