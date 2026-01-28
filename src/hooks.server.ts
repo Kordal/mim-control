@@ -13,7 +13,6 @@ const sessionHandle: Handle = async ({ event, resolve }) => {
 
 	if (session?.user) {
 		event.locals.user = session.user;
-		console.log(session.user);
 	}
 
 	const response = await resolve(event);

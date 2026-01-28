@@ -1,56 +1,53 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx,svetle}", // Adjust based on your project structure
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx,svelte}"],
   theme: {
     extend: {
       colors: {
         // --- 1. The Foundation (Backgrounds) ---
         background: {
-          DEFAULT: '#0F172A', // "Deep Void" - Main app background
-          panel: '#1E293B',   // "Panel Grey" - Cards, Sidebars, Inputs
-          hover: '#334155',   // "Active Grey" - Hover states, Dropdowns
+          DEFAULT: '#121212', // Deep black
+          panel: '#1E1E1E',   // Dark gray panel
+          hover: '#2A2A2A',   // Hover state gray
         },
         
         // --- 2. Typography (Text) ---
         text: {
-          primary: '#F8FAFC',   // High contrast white (Headers, Body)
-          secondary: '#94A3B8', // Muted slate (Timestamps, Labels)
-          tertiary: '#475569',
-            // Darker slate (Placeholders, Disabled)
+          primary: '#FAFAFA',   // Near white
+          secondary: '#A0A0A0', // Mid gray
+          tertiary: '#666666',  // Darker gray
         },
 
         // --- 3. Borders ---
         border: {
-          DEFAULT: '#334155', // Standard border
-          subtle: '#1E293B',  // Subtle dividers
+          DEFAULT: '#3A3A3A', // Standard gray border
+          subtle: '#252525',  // Subtle divider
         },
 
         // --- 4. Semantic Signals (Status) ---
         status: {
-          critical: '#EF4444', // Red Alert (P1, Error)
-          warning: '#F59E0B',  // Caution Amber (P2, Degraded)
-          success: '#10B981',  // System Green (Solved, Healthy)
+          critical: '#B0B0B0', // Light gray (was red)
+          warning: '#808080',  // Medium gray (was amber)
+          success: '#D0D0D0',  // Lighter gray (was green)
         },
 
         // --- 5. Actions & Tech ---
         brand: {
-          blue: '#3B82F6',    // "Tech Blue" - Primary Buttons, Links
-          purple: '#8B5CF6',  // "Cyber Purple" - Technical Actions
+          blue: '#909090',    // Medium gray (was blue)
+          purple: '#707070',  // Darker gray (was purple)
         },
         button: {
-          primary: "#10B981",
-          secondary: "#F59E0B",
-          tertiary: "#EF4444",
+          primary: '#E0E0E0',   // Light gray
+          secondary: '#A0A0A0', // Medium gray
+          tertiary: '#606060',  // Dark gray
         }
       },
       
-      // --- 6. Custom Shadows (The "Glow" Effects) ---
+      // --- 6. Custom Shadows (Grayscale Glows) ---
       boxShadow: {
-        'glow-critical': '0 0 20px -5px rgba(239, 68, 68, 0.5)', // Red glow
-        'glow-blue': '0 0 20px -5px rgba(59, 130, 246, 0.5)',    // Blue glow
-        'panel': '0 4px 6px -1px rgba(0, 0, 0, 0.5)',            // Depth for cards
+        'glow-critical': '0 0 20px -5px rgba(180, 180, 180, 0.4)', // Gray glow
+        'glow-blue': '0 0 20px -5px rgba(144, 144, 144, 0.4)',     // Gray glow
+        'panel': '0 4px 6px -1px rgba(0, 0, 0, 0.6)',              // Deeper shadow
       },
       
       // --- 7. Animations ---

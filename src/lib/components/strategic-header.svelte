@@ -1,22 +1,48 @@
 <script lang="ts">
+	import type { incidents } from '$lib/server/db/schema';
+	import { calculateResolutionDuration, formatIncidentDate, formatElapsedTime } from '$lib/utils';
+	type Incident = typeof incidents.$inferSelect;
+	let { incident }: { incident: Incident } = $props();
+	const formattedDate = $derived(formatIncidentDate(incident.createdAt));
+	let now = $state(new Date());
+	$effect(() => {
+		const interval = setInterval(() => {
+			now = new Date();
+		}, 1000);
+		return () => clearInterval(interval);
+	});
+	const duration = $derived(formatElapsedTime(incident.createdAt, now));
 </script>
 
 <section
-	class="border-DEFAULT gap-6 rounded-xl border bg-background-panel p-6 shadow-lg md:flex md:justify-center"
+	class="gap-6 rounded-xl border border-border bg-background-panel p-6 shadow-lg md:flex md:justify-center"
 >
 	<div class="gap-3">
 		<p class="flex min-w-2xs items-center gap-3">
 			<span class="rounded-full bg-status-critical px-2 py-1 text-xs text-text-primary">
-				MAJOR</span
-			>
-			<span class="text-text-secondary">Started: Oct 24, 09:00 UTC</span>
+				{incident.severity}
+			</span>
+			<span class="text-text-secondary">Started: {formattedDate}</span>
 		</p>
-		<h1 class="text-text-primary">INC-31234231: API Latency</h1>
-		<p class="text-text-secondary">Impact: HIGH 100%</p>
+		<h1 class="text-text-primary">{incident.publicId}: {incident.title}</h1>
+		<p class="text-text-secondary">Impact:</p>
+		<ul class="flex gap-2">
+			{#each incident.impactedServices as service}
+				<div
+					class="dark:bg-surface-dark flex h-8 shrink-0 items-center gap-x-2 rounded-lg border border-slate-300 bg-slate-200 px-3 transition-colors dark:border-slate-700"
+				>
+					<span class="text-sm font-medium text-text-tertiary">{service}</span>
+				</div>
+			{/each}
+		</ul>
 	</div>
-	<div class="gap-6 py-2 pl-6 md:border-l">
+	<div class="gap-6 py-2 md:border-l md:border-border md:pl-6">
 		<p class="text-xs text-text-secondary">Duration</p>
-		<p class="text-4xl text-text-primary">00:40:15</p>
+		<p class="text-4xl text-text-primary">
+			{incident.status === 'SOLVED'
+				? calculateResolutionDuration(incident.createdAt, incident.resolvedAt)
+				: duration}
+		</p>
 		<div class="text-xs">
 			<p>
 				Expected Next Update:
@@ -24,8 +50,8 @@
 			</p>
 		</div>
 	</div>
-	<div class=" gap-6 py-2 pl-6 md:border-l">
+	<div class=" gap-6 py-2 md:border-l md:border-border md:pl-6">
 		<p class="text-xs text-text-secondary">Current Status:</p>
-		<p class="text-4xl text-text-primary">OPEN</p>
+		<p class="text-4xl text-text-primary">{incident.status}</p>
 	</div>
 </section>
