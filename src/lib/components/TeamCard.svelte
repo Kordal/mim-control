@@ -34,7 +34,7 @@
 							isAdded: true
 						});
 					}}
-					class="ml-auto rounded-md border border-border bg-status-critical p-2"
+					class="ml-auto rounded-md border border-border bg-status-critical p-2 text-background"
 					>Add to Roster</button
 				>
 			{:else}
@@ -45,7 +45,8 @@
 							isAdded: false
 						});
 					}}
-					class="ml-auto rounded-md border border-border bg-status-success p-2">Remove</button
+					class="ml-auto rounded-md border border-border bg-status-success p-2 text-background"
+					>Remove</button
 				>
 			{/if}
 		</div>

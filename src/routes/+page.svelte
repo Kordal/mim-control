@@ -35,7 +35,7 @@
 		<p>Status: {incident.status}</p>
 		<p>Severity: {incident.severity}</p>
 		<a
-			class="flex w-fit items-center rounded-md border border-border bg-button-primary p-2"
+			class="flex w-fit items-center rounded-md border border-border bg-button-primary p-2 text-background"
 			href={`/incidents/${incident.id}/assemble`}>View</a
 		>
 	</div>

@@ -6,8 +6,8 @@
 	$inspect(impactedServices);
 </script>
 
-<section class="flex h-screen items-center justify-center">
-	<div class="rounded-lg bg-background-panel p-6 md:w-[400px]">
+<section class="flex min-h-screen items-center justify-center p-4">
+	<div class="w-full max-w-md rounded-lg bg-background-panel p-4 md:p-6">
 		<form {...createIncident}>
 			<div class="mb-2 flex flex-col gap-2">
 				<label class="text-text-secondary" for="publicId">Incident ID</label>
@@ -40,12 +40,12 @@
 				></textarea>
 			</div>
 			<div>
-				<hr class="my-10 border border-border" />
+				<hr class="my-6 border border-border md:my-10" />
 			</div>
 			<div class="mb-4 flex flex-col items-center justify-center gap-2">
 				<p class="mb-2 text-sm text-text-secondary">Status</p>
-				<div class="flex items-center justify-center gap-4">
-					{#each ['ONGOING', 'MITIGATED', 'SOLVED'] as value}
+				<div class="flex flex-wrap items-center justify-center gap-2 md:gap-4">
+					§ {#each ['ONGOING', 'MITIGATED', 'SOLVED'] as value}
 						<div class="relative">
 							<input
 								{...createIncident.fields.status.as('radio', value)}
@@ -66,18 +66,18 @@
 			</div>
 			<div class="mb-4 flex flex-col items-center justify-center gap-2">
 				<p class="mb-2 text-sm text-text-secondary">Severity</p>
-				<div class="flex items-center justify-center gap-4">
+				<div class="flex flex-wrap items-center justify-center gap-2 md:gap-4">
 					{#each ['P1', 'P2', 'P3'] as value}
 						<div class="relative">
 							<input
 								{...createIncident.fields.severity.as('radio', value)}
-								class="peer sr-only"
+								class="peer sr-only text-background"
 								type="radio"
 								name="severity"
 								id="severity-{value}"
 							/>
 							<label
-								class="border-subtle cursor-pointer rounded-md border p-2 text-text-secondary transition-all peer-checked:border-button-primary peer-checked:bg-button-primary peer-checked:text-white"
+								class=" border-subtle cursor-pointer rounded-md border p-2 text-background text-text-secondary transition-all peer-checked:border-button-primary peer-checked:bg-button-primary peer-checked:text-white"
 								for="severity-{value}"
 							>
 								{value}
@@ -86,14 +86,14 @@
 					{/each}
 				</div>
 			</div>
-			<hr class="my-10 border border-border" />
+			<hr class="my-6 border border-border md:my-10" />
 
 			<div class="mb-4 flex flex-col gap-2">
 				<Searchdropdown bind:selected={impactedServices}></Searchdropdown>
 				<input type="hidden" name="impactedServices" value={impactedServices.join(',')} />
 			</div>
 			<div class="flex justify-end">
-				<button class="rounded-md bg-button-primary p-2">Create Incident</button>
+				<button class="rounded-md bg-button-primary p-2 text-background">Create Incident</button>
 			</div>
 		</form>
 	</div>
