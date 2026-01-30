@@ -91,10 +91,11 @@
 		{/if}
 	</div>
 	<div class="flex justify-end">
-		<button
+		<a
+			href="/incidents/{incident.id}/mim"
 			class="mt-6 rounded-lg bg-button-primary px-6 py-3 font-medium text-background shadow-md transition-opacity hover:opacity-90"
 		>
 			Start The War-Room
-		</button>
+		</a>
 	</div>
 </div>

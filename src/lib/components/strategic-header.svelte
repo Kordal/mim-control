@@ -12,6 +12,7 @@
 		return () => clearInterval(interval);
 	});
 	const duration = $derived(formatElapsedTime(incident.createdAt, now));
+	const lastUpdate = $derived(formatElapsedTime(incident.updatedAt, now));
 </script>
 
 <section
@@ -45,8 +46,8 @@
 		</p>
 		<div class="text-xs">
 			<p>
-				Expected Next Update:
-				<span class="text-text-secondary"> 00:01:30</span>
+				Last Update:
+				<span class="text-text-secondary"> {lastUpdate}</span>
 			</p>
 		</div>
 	</div>
