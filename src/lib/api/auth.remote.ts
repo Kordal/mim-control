@@ -38,8 +38,5 @@ export const signout = form(async () => {
 
 export const getUser = query(async () => {
 	const { locals } = getRequestEvent();
-	if (!locals.user) {
-		redirect(307, '/auth/');
-	}
 	return locals.user;
 });
