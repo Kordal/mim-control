@@ -33,7 +33,7 @@
 
 <!-- This is the selector for what type of message is the user creating -->
 {#snippet textControl()}
-	<SegmentedControl>
+	<SegmentedControl class="mb-1">
 		<SegmentedControl.Label />
 		<SegmentedControl.Control>
 			<SegmentedControl.Indicator />
@@ -56,9 +56,17 @@
 	class="mt-2 mb-4 card preset-filled-surface-100-900 p-4 text-start shadow-md shadow-surface-500/50"
 >
 	<div>
+		<div class="mb-4 flex items-center justify-between">
+			<h2 class="text-lg font-semibold">Update Incident</h2>
+		</div>
 		{@render textControl()}
 		<textarea
+			class="mb-4 w-full rounded-md border border-surface-300 shadow-md shadow-surface-400/30"
+			placeholder="Type the short description of the update"
+		></textarea>
+		<textarea
 			class="h-20 w-full rounded-md border border-surface-300 shadow-md shadow-surface-400/30 md:h-60"
+			placeholder="Type the long description of the update"
 		></textarea>
 	</div>
 	<div class="flex items-center justify-end">

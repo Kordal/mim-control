@@ -22,7 +22,7 @@
 	]);
 </script>
 
-<div class="mb-4 card preset-filled-surface-100-900 p-4 text-start shadow-sm shadow-surface-500/50">
+<div class="mb-4 card preset-filled-surface-100-900 p-4 text-start shadow-md shadow-surface-500/50">
 	<div class="grid grid-cols-[1fr_1px_1fr]">
 		<div class="p-4">
 			<div class="flex flex-col gap-2">
@@ -48,12 +48,6 @@
 					</div>
 				</div>
 				<div class="hr"></div>
-				<div class="flex items-center justify-between gap-2">
-					<div class="flex items-center gap-2">
-						<Icon icon="ic:baseline-people" class="text-text-secondary"></Icon>
-						<p class="text-text-secondary">Online <span class="text-text-primary">24/30</span></p>
-					</div>
-				</div>
 			</div>
 		</div>
 		<span class="row-span-2 vr border-l"></span>
