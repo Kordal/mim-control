@@ -1,5 +1,14 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp, boolean, index, pgEnum, uuid } from 'drizzle-orm/pg-core';
+import {
+	pgTable,
+	text,
+	timestamp,
+	boolean,
+	index,
+	pgEnum,
+	uuid,
+	decimal
+} from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -104,14 +113,14 @@ export const statusEnum = pgEnum('status', ['ONGOING', 'MITIGATED', 'SOLVED']);
 // 2. The Incidents Table
 export const incidents = pgTable('incidents', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	publicId: text('public_id').notNull().unique(), // e.g. "INC-1001"
+	incId: text('inc_id').notNull().unique(), // e.g. "INC-1001"
 	title: text('title').notNull(),
 	description: text('description'), // "User Impact"
 
 	status: statusEnum('status').default('ONGOING').notNull(),
 	severity: severityEnum('severity').default('P1').notNull(),
 
-	commanderId: text('commander_id').references(() => user.id),
+	mimInChargeId: text('mim_in_charge_id').references(() => user.id),
 	impactedServices: text('impacted_services').array(), // Postgres Array
 
 	createdAt: timestamp('created_at').defaultNow(),
@@ -121,8 +130,8 @@ export const incidents = pgTable('incidents', {
 
 // 3. Define Relations (For easy querying later)
 export const incidentRelations = relations(incidents, ({ one }) => ({
-	commander: one(user, {
-		fields: [incidents.commanderId],
+	mimInCharge: one(user, {
+		fields: [incidents.mimInChargeId],
 		references: [user.id]
 	})
 }));

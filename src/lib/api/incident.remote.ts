@@ -10,7 +10,7 @@ const SEVERITY_OPTIONS = ['P1', 'P2', 'P3'] as const;
 const STATUS_OPTIONS = ['ONGOING', 'MITIGATED', 'SOLVED'] as const;
 
 const createIncidentSchema = v.object({
-	publicId: v.string(),
+	incId: v.string(),
 	title: v.string(),
 	description: v.optional(v.string()),
 	status: v.picklist(STATUS_OPTIONS),
@@ -20,7 +20,7 @@ const createIncidentSchema = v.object({
 
 export const createIncident = form(
 	createIncidentSchema,
-	async ({ publicId, title, severity, description, status, impactedServices }) => {
+	async ({ incId, title, severity, description, status, impactedServices }) => {
 		const { locals } = getRequestEvent();
 
 		const servicesArray = impactedServices ? impactedServices.split(',').filter(Boolean) : [];
@@ -28,13 +28,13 @@ export const createIncident = form(
 		const incident = await db
 			.insert(incidents)
 			.values({
-				publicId,
+				incId,
 				title,
 				severity,
 				description,
 				impactedServices: servicesArray,
 				status,
-				commanderId: locals.user?.id ?? null,
+				mimInChargeId: locals.user?.id ?? null,
 				createdAt: new Date(),
 				updatedAt: new Date()
 			})
@@ -44,7 +44,7 @@ export const createIncident = form(
 
 		const result = incident[0];
 		if (result) {
-			redirect(303, `/incidents/${result.id}/assemble`);
+			redirect(303, `/incidents/${result.id}/mim`);
 		}
 
 		return result;
