@@ -1,5 +1,14 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp, boolean, index, pgEnum, uuid } from 'drizzle-orm/pg-core';
+import {
+	pgTable,
+	text,
+	timestamp,
+	boolean,
+	index,
+	pgEnum,
+	uuid,
+	decimal
+} from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -104,14 +113,14 @@ export const statusEnum = pgEnum('status', ['ONGOING', 'MITIGATED', 'SOLVED']);
 // 2. The Incidents Table
 export const incidents = pgTable('incidents', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	publicId: text('public_id').notNull().unique(), // e.g. "INC-1001"
+	incId: text('inc_id').notNull().unique(), // e.g. "INC-1001"
 	title: text('title').notNull(),
 	description: text('description'), // "User Impact"
 
 	status: statusEnum('status').default('ONGOING').notNull(),
 	severity: severityEnum('severity').default('P1').notNull(),
 
-	commanderId: text('commander_id').references(() => user.id),
+	mimInChargeId: text('mim_in_charge_id').references(() => user.id),
 	impactedServices: text('impacted_services').array(), // Postgres Array
 
 	createdAt: timestamp('created_at').defaultNow(),
@@ -121,8 +130,87 @@ export const incidents = pgTable('incidents', {
 
 // 3. Define Relations (For easy querying later)
 export const incidentRelations = relations(incidents, ({ one }) => ({
-	commander: one(user, {
-		fields: [incidents.commanderId],
+	mimInCharge: one(user, {
+		fields: [incidents.mimInChargeId],
+		references: [user.id]
+	})
+}));
+
+//INCIDENT UPDATES TABLE
+export const incidentUpdates = pgTable('incident_updates', {
+	id: uuid('id').defaultRandom().primaryKey(),
+
+	//HERE WE ARE USING THE ID OF THE INCIDENT TABLE, NOT THE INCID (not from ServiceNow eg.)
+	incId: uuid('inc_id')
+		.notNull()
+		.references(() => incidents.id, { onDelete: 'cascade' }),
+	type: text('type').notNull(),
+	title: text('title').notNull(),
+	description: text('description'),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow()
+});
+
+// Define the relationship FROM the incidents table
+export const incidentsRelations = relations(incidents, ({ many, one }) => ({
+	updates: many(incidentUpdates),
+	logs: many(incidentLogs), // ADD THIS
+	mimInCharge: one(user, {
+		fields: [incidents.mimInChargeId],
+		references: [user.id]
+	})
+}));
+
+// Define the relationship FROM the incidentUpdates table
+export const incidentUpdatesRelations = relations(incidentUpdates, ({ one }) => ({
+	incident: one(incidents, {
+		fields: [incidentUpdates.incId], // The field in THIS table
+		references: [incidents.id] // The field in the OTHER table
+	})
+}));
+
+//INCIDENT LOG TABLE
+
+export const incidentLogs = pgTable(
+	'incident_logs',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+
+		// Reference to incident
+		incId: uuid('inc_id')
+			.notNull()
+			.references(() => incidents.id, { onDelete: 'cascade' }),
+
+		// Log details - type accepts any string
+		type: text('type').notNull(),
+		description: text('description').notNull(),
+
+		// Who performed the action
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id),
+		userName: text('user_name').notNull(),
+
+		// Optional metadata as JSON
+		metadata: text('metadata'), // Store as JSON string
+
+		// Timestamp
+		timestamp: timestamp('timestamp').defaultNow().notNull()
+	},
+	(table) => [
+		index('incident_logs_incId_idx').on(table.incId),
+		index('incident_logs_timestamp_idx').on(table.timestamp)
+	]
+);
+
+// Add relations
+export const incidentLogsRelations = relations(incidentLogs, ({ one }) => ({
+	incident: one(incidents, {
+		fields: [incidentLogs.incId],
+		references: [incidents.id]
+	}),
+	user: one(user, {
+		fields: [incidentLogs.userId],
 		references: [user.id]
 	})
 }));
