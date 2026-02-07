@@ -1,11 +1,11 @@
 <script>
-	import IncidentHeader from '$lib/components/UI/IncidentHeader/IncidentHeader.svelte';
-	import IncidentTextArea from '$lib/components/UI/IncidentTextArea/IncidentTextArea.svelte';
-	import IncTimeline from '$lib/components/UI/IncTimeline/IncTimeline.svelte';
-	import ActionTable from '$lib/components/UI/ActionTable/ActionTable.svelte';
-	import PresentPeopleCard from '$lib/components/UI/PresentPeopleCard/PresentPeopleCard.svelte';
-	import ReportedImpact from '$lib/components/UI/ReportedImpact/ReportedImpact.svelte';
-	import LiveLog from '$lib/components/UI/LiveLog/LiveLog.svelte';
+	import IncidentHeader from '$lib/components/MIM/UI/IncidentHeader/IncidentHeader.svelte';
+	import IncidentTextArea from '$lib/components/MIM/UI/IncidentTextArea/IncidentTextArea.svelte';
+	import IncTimeline from '$lib/components/MIM/UI/IncTimeline/IncTimeline.svelte';
+	import ActionTable from '$lib/components/MIM/UI/ActionTable/ActionTable.svelte';
+	import PresentPeopleCard from '$lib/components/MIM/UI/PresentPeopleCard/PresentPeopleCard.svelte';
+	import ReportedImpact from '$lib/components/MIM/UI/ReportedImpact/ReportedImpact.svelte';
+	import LiveLog from '$lib/components/MIM/UI/LiveLog/LiveLog.svelte';
 </script>
 
 <div class="grid grid-cols-1 p-4 md:grid-cols-12">

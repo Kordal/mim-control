@@ -2,16 +2,15 @@
 	import Icon from '@iconify/svelte';
 	import { getIncidentLogs } from '$lib/api/incident.remote';
 	import { page } from '$app/state';
-
 	import { formatRelativeTime } from '$lib/utils/date';
 
 	const id = $derived(page.params.id);
 </script>
 
-<div class="mb-4 ml-2 flex flex-shrink-0 items-center justify-between">
+<div class="mb-4 ml-2 flex shrink-0 items-center justify-between">
 	<h2 class="text-lg font-semibold">Live Activity Log</h2>
 	<!-- TODO: Add refresh button -->
-	<button class="btn preset-tonal-primary btn-sm">
+	<button onclick={() => getIncidentLogs(id!).refresh()} class="btn preset-tonal-primary btn-sm">
 		<Icon icon="ic:baseline-refresh" class="text-base" />
 	</button>
 </div>
@@ -39,7 +38,7 @@
 				>
 					<!-- Icon -->
 					<div
-						class="relative z-10 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white ring-2 ring-gray-300 dark:bg-gray-900 dark:ring-gray-700"
+						class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white ring-2 ring-gray-300 dark:bg-gray-900 dark:ring-gray-700"
 					>
 						<Icon icon="ic:baseline-check" class="text-base text-green-500" />
 					</div>
@@ -47,14 +46,21 @@
 					<!-- Content -->
 					<div class="min-w-0 flex-1">
 						<div class="flex items-start justify-between gap-2">
-							<p class="text-sm font-medium break-words">{log.description}</p>
-							<span class="flex-shrink-0 text-xs whitespace-nowrap text-gray-500"
+							<p class="warp-break-words text-sm font-medium">
+								[{log.type.toUpperCase()}]: {log.description}
+							</p>
+							<span class="shrink-0 text-xs whitespace-nowrap text-gray-500"
 								>{formatRelativeTime(log.timestamp)}
 							</span>
 						</div>
 						<p class="mt-1 text-xs text-gray-500">
 							by <span class="font-medium">{log.userName}</span>
 						</p>
+						{#if log.metadata}
+							<p class="mt-1 text-xs text-gray-500">
+								{log.metadata}
+							</p>
+						{/if}
 					</div>
 				</div>
 			{/each}

@@ -2,7 +2,7 @@
 	import './layout.css';
 
 	import '../app.css';
-	import Appbar from '$lib/components/UI/Appbar/Appbar.svelte';
+	import Appbar from '$lib/components/MIM/UI/Appbar/Appbar.svelte';
 	import { getUser } from '$lib/api/auth.remote';
 
 	let { children } = $props();
