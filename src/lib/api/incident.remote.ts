@@ -103,7 +103,7 @@ const createIncidentLogSchema = v.object({
 	incidentId: v.pipe(v.string(), v.uuid()),
 	type: v.string(),
 	description: v.string(),
-	metadata: v.optional(v.string())
+	metadata: v.optional(v.any())
 });
 
 export const createIncidentLog = form(

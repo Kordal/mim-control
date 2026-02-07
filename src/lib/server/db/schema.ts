@@ -7,7 +7,9 @@ import {
 	index,
 	pgEnum,
 	uuid,
-	decimal
+	decimal,
+	integer,
+	json
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
@@ -192,7 +194,7 @@ export const incidentLogs = pgTable(
 		userName: text('user_name').notNull(),
 
 		// Optional metadata as JSON
-		metadata: text('metadata'), // Store as JSON string
+		metadata: json('metadata').$type<Record<string, any>>().default({}),
 
 		// Timestamp
 		timestamp: timestamp('timestamp').defaultNow().notNull()
@@ -203,7 +205,6 @@ export const incidentLogs = pgTable(
 	]
 );
 
-// Add relations
 export const incidentLogsRelations = relations(incidentLogs, ({ one }) => ({
 	incident: one(incidents, {
 		fields: [incidentLogs.incId],
@@ -214,3 +215,56 @@ export const incidentLogsRelations = relations(incidentLogs, ({ one }) => ({
 		references: [user.id]
 	})
 }));
+
+//SERIVCES table
+
+export const services = pgTable('services', {
+	id: uuid('id').defaultRandom().primaryKey(),
+
+	// Service identification
+	name: text('name').notNull().unique(), // e.g., 'Mobile App', 'API Gateway', 'Payment Service'
+	displayName: text('display_name').notNull(), // User-friendly name
+
+	// Service metadata
+	description: text('description'), // What this service does
+	type: text('type').notNull(), // e.g., 'frontend', 'backend', 'database', 'infrastructure'
+	category: text('category'), // e.g., 'customer-facing', 'internal', 'third-party'
+
+	// Status and health
+
+	healthCheckUrl: text('health_check_url'), // For monitoring
+
+	// Ownership
+	ownerId: text('owner_id').references(() => user.id), // Primary owner/responsible person
+	teamId: text('team_id'), // If you have teams
+
+	// SLA and criticality
+	criticalityLevel: text('criticality_level').notNull().default('medium'), // 'low' | 'medium' | 'high' | 'critical'
+	slaUptime: integer('sla_uptime').default(99), // SLA target (percentage)
+
+	// Dependencies (JSON array of service IDs)
+	dependencies: json('dependencies').$type<string[]>().default([]), // Services this one depends on
+
+	// Contact info
+	slackChannel: text('slack_channel'), // e.g., '#mobile-app-alerts'
+	pagerDutyKey: text('pagerduty_key'), // Integration key
+	documentationUrl: text('documentation_url'),
+
+	// Metadata
+	isActive: boolean('is_active').notNull().default(true), // Soft delete
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow()
+});
+
+export const warRoomPresence = pgTable('war_room_presence', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	incId: uuid('inc_id')
+		.notNull()
+		.references(() => incidents.id, { onDelete: 'cascade' }),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id),
+	userName: text('user_name').notNull(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	lastSeen: timestamp('last_seen').defaultNow().notNull()
+});
